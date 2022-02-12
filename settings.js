@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         IsleWard - Addon Settings Framework
 // @namespace    IsleWard.Addon
-// @version      1.1.0
+// @version      1.1.1
 // @description  Provides a framework for addon developers to effortlessly add their addons' settings to IsleWard's options menu.
 // @author       Carnagion
 // @match        https://play.isleward.com/
@@ -359,16 +359,20 @@ function addon()
                 return `iwd_addon_${name.toLowerCase().replace(/\s/gi, "_")}`;
             },
         };
-    addons.register(content);
+    window.addons.register(content);
 }
 
 function calculatePercentage(current, min, max)
 {
-    return (100 * current) / (max - min)
+    return (100 * current) / (max - min);
 }
 
 function cycleUntilMatch(array, target)
 {
+    if (!array.includes(target))
+    {
+        return;
+    }
     while (array[0] !== target)
     {
         array.push(array.shift());
