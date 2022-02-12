@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         IsleWard - Addon Settings Framework
 // @namespace    IsleWard.Addon
-// @version      1.0.0
+// @version      1.1.0
 // @description  Provides a framework for addon developers to effortlessly add their addons' settings to IsleWard's options menu.
 // @author       Carnagion
 // @match        https://play.isleward.com/
@@ -105,6 +105,13 @@ function addon()
                 };
                 settingNameElement.addEventListener("mouseout", mouseout);
 
+                let localStorageName = this.getLocalStorageName(name);
+                let stored = localStorage.getItem(localStorageName);
+                if (stored)
+                {
+                    cycleUntilMatch(values, stored);
+                }
+
                 let settingValueDiv = $(`<div class="value">${values[0]}</div>`);
                 settingValueDiv.appendTo(settingContainerDiv);
                 let settingValueCss =
@@ -124,9 +131,13 @@ function addon()
                     let now = values[0];
                     settingValueDiv.html(now);
 
+                    localStorage.setItem(localStorageName, now.toString());
+
                     window.events.emit("onSettingsToggleClick", name, heading, previous, now);
                 };
                 settingNameElement.addEventListener("click", click);
+
+                window.events.emit("onSettingsToggleClick", name, heading, null, values[0]);
 
                 return settingContainerDiv;
             },
@@ -137,6 +148,13 @@ function addon()
             slider: function(name, min, max, amount, initial, heading)
             {
                 let delta = (max - min) / amount;
+
+                let localStorageName = this.getLocalStorageName(name);
+                let stored = localStorage.getItem(localStorageName);
+                if (stored)
+                {
+                    initial = parseInt(stored, 10);
+                }
                 initial = Math.min(Math.max(initial, min), max);
 
                 let settingContainerDiv = this.option(name, heading);
@@ -231,7 +249,7 @@ function addon()
                 let settingTickCss =
                     {
                         "background-color": "#48edff",
-                        "left": `${initial}%`,
+                        "left": `${calculatePercentage(initial, min, max)}%`,
                         "position": "absolute",
                         "width": "5px",
                         "height": "20px",
@@ -263,9 +281,11 @@ function addon()
                     settingValueDiv.html(now);
                     let settingTickCssNew =
                         {
-                            "left": `${now}%`,
+                            "left": `${calculatePercentage(now, min, max)}%`,
                         };
                     settingTickDiv.css(settingTickCssNew);
+
+                    localStorage.setItem(localStorageName, now.toString());
 
                     settingDecreaseDiv.removeClass("disabled");
                     settingIncreaseDiv.removeClass("disabled");
@@ -285,9 +305,11 @@ function addon()
                     settingValueDiv.html(now);
                     let settingTickCssNew =
                         {
-                            "left": `${now}%`,
+                            "left": `${calculatePercentage(now, min, max)}%`,
                         };
                     settingTickDiv.css(settingTickCssNew);
+
+                    localStorage.setItem(localStorageName, now.toString());
 
                     settingDecreaseDiv.removeClass("disabled");
                     settingIncreaseDiv.removeClass("disabled");
@@ -299,6 +321,19 @@ function addon()
                     window.events.emit("onSettingsSliderClick", name, heading, previous, now);
                 }
                 settingIncreaseDiv[0].addEventListener("click", increaseClick);
+
+                settingIncreaseDiv.removeClass("disabled");
+                if (initial >= max)
+                {
+                    settingIncreaseDiv.addClass("disabled");
+                }
+                settingDecreaseDiv.removeClass("disabled");
+                if (initial <= min)
+                {
+                    settingDecreaseDiv.addClass("disabled");
+                }
+
+                window.events.emit("onSettingsSliderClick", name, heading, null, initial);
 
                 return settingContainerDiv;
             },
@@ -319,6 +354,23 @@ function addon()
             {
                 return name.toLowerCase().replace(/\s/gi, ".");
             },
+            getLocalStorageName(name)
+            {
+                return `iwd_addon_${name.toLowerCase().replace(/\s/gi, "_")}`;
+            },
         };
     addons.register(content);
+}
+
+function calculatePercentage(current, min, max)
+{
+    return (100 * current) / (max - min)
+}
+
+function cycleUntilMatch(array, target)
+{
+    while (array[0] !== target)
+    {
+        array.push(array.shift());
+    }
 }
