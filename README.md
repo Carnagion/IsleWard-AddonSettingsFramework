@@ -2,19 +2,22 @@
 
 IsleWard - Addon Settings Framework provides a set of functions and events that enable addon developers to add settings for their addons with little to no effort.
 
+Supports IsleWard version 0.10.5.
+
 ## Features
 
-- #### Headings
-  Headings are used to categorise settings.
+- #### Custom settings
+  Custom settings can be added with just a single line of code. Quite literally.  
+  Each setting has its own event that can be easily hooked up with callback functions to know when a setting's value has been changed.  
+  Supported setting types include:
+  - Headings
+  - Toggles
+  - Switches
+  - Sliders
 
-- #### Toggles
-  Toggles are settings with a fixed set of values that are cycled through when clicked on.
-
-- #### Switches
-  Switches are a special case of toggles with only two possible values - on and off.
-
-- #### Sliders
-  Sliders are settings with a range of numerical values from a minimum to a maximum.
+- #### Persistence
+  Custom settings' values are saved to the local storage when changed, and persist across multiple sessions and playthroughs.
+  
 
 Detailed explanations on each feature as well as installing/using the framework can be found on the [Addon Settings Framework wiki](https://github.com/Carnagion/IsleWard-AddonSettingsFramework/wiki).
 
