@@ -8,9 +8,9 @@
 // @grant        none
 // ==/UserScript==
 
-defer(addon);
+defer(addon, 30);
 
-function defer(method)
+function defer(method, interval)
 {
     if (window.jQuery)
     {
@@ -22,7 +22,7 @@ function defer(method)
         {
             defer(method);
         };
-        setTimeout(handler, 50);
+        setTimeout(handler, interval);
     }
 }
 
@@ -40,7 +40,7 @@ function addon()
             {
                 this.menu ??= $(".ui-container .uiOptions .bottom .list");
 
-                let headingDiv = $(`.ui-container .uiOptions .bottom .list .heading.${this.convertToSafeClassName(name)}`);
+                let headingDiv = this.menu.find(`.heading.${this.convertToSafeClassName(name)}`);
                 if (headingDiv.length !== 0)
                 {
                     return headingDiv;
