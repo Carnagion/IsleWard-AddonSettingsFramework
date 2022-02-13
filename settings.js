@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         IsleWard - Addon Settings Framework
 // @namespace    IsleWard.Addon
-// @version      1.1.1
+// @version      1.1.2
 // @description  Provides a framework for addon developers to effortlessly add their addons' settings to IsleWard's options menu.
 // @author       Carnagion
 // @match        https://play.isleward.com/
