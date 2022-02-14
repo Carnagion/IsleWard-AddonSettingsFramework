@@ -31,10 +31,9 @@ function addon()
     let content =
         {
             menu: null,
-            init: function(events)
+            init: function()
             {
                 window.settings = this;
-                window.events = events;
             },
             heading: function(name)
             {
@@ -133,11 +132,11 @@ function addon()
 
                     localStorage.setItem(localStorageName, now.toString());
 
-                    window.events.emit("onSettingsToggleClick", name, heading, previous, now);
+                    window.addons.events.emit("onSettingsToggleClick", name, heading, previous, now);
                 };
                 settingNameElement.addEventListener("click", click);
 
-                window.events.emit("onSettingsToggleClick", name, heading, null, values[0]);
+                window.addons.events.emit("onSettingsToggleClick", name, heading, null, values[0]);
 
                 return settingContainerDiv;
             },
@@ -294,7 +293,7 @@ function addon()
                         settingDecreaseDiv.addClass("disabled");
                     }
 
-                    window.events.emit("onSettingsSliderClick", name, heading, previous, now);
+                    window.addons.events.emit("onSettingsSliderClick", name, heading, previous, now);
                 };
                 settingDecreaseDiv[0].addEventListener("click", decreaseClick);
 
@@ -318,7 +317,7 @@ function addon()
                         settingIncreaseDiv.addClass("disabled");
                     }
 
-                    window.events.emit("onSettingsSliderClick", name, heading, previous, now);
+                    window.addons.events.emit("onSettingsSliderClick", name, heading, previous, now);
                 }
                 settingIncreaseDiv[0].addEventListener("click", increaseClick);
 
@@ -333,7 +332,7 @@ function addon()
                     settingDecreaseDiv.addClass("disabled");
                 }
 
-                window.events.emit("onSettingsSliderClick", name, heading, null, initial);
+                window.addons.events.emit("onSettingsSliderClick", name, heading, null, initial);
 
                 return settingContainerDiv;
             },

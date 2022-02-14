@@ -2,8 +2,6 @@
 
 IsleWard - Addon Settings Framework provides a set of functions and events that enable addon developers to add settings for their addons with little to no effort.
 
-Supports IsleWard version 0.10.5.
-
 ## Features
 
 - #### Custom settings
