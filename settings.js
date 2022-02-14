@@ -1,18 +1,18 @@
 // ==UserScript==
 // @name         IsleWard - Addon Settings Framework
 // @namespace    IsleWard.Addon
-// @version      1.1.3
+// @version      1.1.2
 // @description  Provides a framework for addon developers to effortlessly add their addons' settings to IsleWard's options menu.
 // @author       Carnagion
 // @match        https://play.isleward.com/
 // @grant        none
 // ==/UserScript==
 
-defer(addon, 30);
+retry(addon, () => window.jQuery, 30);
 
-function defer(method, interval)
+function retry(method, condition, interval)
 {
-    if (window.jQuery)
+    if (condition())
     {
         method();
     }
@@ -20,7 +20,7 @@ function defer(method, interval)
     {
         let handler = function()
         {
-            defer(method, interval);
+            retry(method, condition, interval);
         };
         setTimeout(handler, interval);
     }
